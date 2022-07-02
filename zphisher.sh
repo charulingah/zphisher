@@ -225,63 +225,13 @@ dependencies() {
 
 }
 
-## Download Ngrok
-download_ngrok() {
-	url="$1"
-	file=`basename $url`
-	if [[ -e "$file" ]]; then
-		rm -rf "$file"
-	fi
-	wget --no-check-certificate "$url" > /dev/null 2>&1
-	if [[ -e "$file" ]]; then
-		unzip "$file" > /dev/null 2>&1
-		mv -f ngrok .server/ngrok > /dev/null 2>&1
-		rm -rf "$file" > /dev/null 2>&1
-		chmod +x .server/ngrok > /dev/null 2>&1
-	else
-		echo -e "\n${RED}[${WHITE}!${RED}]${RED} Error occured, Install Ngrok manually."
-		{ reset_color; exit 1; }
-	fi
-}
-
-## Download Cloudflared
-download_cloudflared() {
-	url="$1"
-	file=`basename $url`
-	if [[ -e "$file" ]]; then
-		rm -rf "$file"
-	fi
-	wget --no-check-certificate "$url" > /dev/null 2>&1
-	if [[ -e "$file" ]]; then
-		mv -f "$file" .server/cloudflared > /dev/null 2>&1
-		chmod +x .server/cloudflared > /dev/null 2>&1
-	else
-		echo -e "\n${RED}[${WHITE}!${RED}]${RED} Error occured, Install Cloudflared manually."
-		{ reset_color; exit 1; }
-	fi
-}
 
 
 
-## Install Cloudflared
-install_cloudflared() {
-	if [[ -e ".server/cloudflared" ]]; then
-		echo -e "\n${GREEN}[${WHITE}+${GREEN}]${GREEN} Cloudflared already installed."
-	else
-		echo -e "\n${GREEN}[${WHITE}+${GREEN}]${CYAN} Installing Cloudflared..."${WHITE}
-		arch=`uname -m`
-		if [[ ("$arch" == *'arm'*) || ("$arch" == *'Android'*) ]]; then
-			download_cloudflared 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm'
-		elif [[ "$arch" == *'aarch64'* ]]; then
-			download_cloudflared 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-arm64'
-		elif [[ "$arch" == *'x86_64'* ]]; then
-			download_cloudflared 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64'
-		else
-			download_cloudflared 'https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-386'
-		fi
-	fi
 
-}
+
+
+
 
 ## Exit message
 msg_exit() {
